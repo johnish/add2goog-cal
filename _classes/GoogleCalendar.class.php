@@ -89,13 +89,14 @@ class GoogleCalendar {
    * @param type $returnButton 
    */
   public function createEventReminder($params, $returnButton=false) {
-    $params += $this->_config;
-    $this->eventTitle = $params['title'];
+    $gCal = new GoogleCalendar();
+    $params += $gCal->_config;
+    $eventTitle = $params['title'];
     /* Date and time of the event, in UTC format */
-    $this->eventStartTime = $this->formatTime($params['datetime']['start']);
-    $this->eventEndTime = $this->formatTime($params['datetime']['end']);
-    $this->eventLocation = $params['location'];
-    return '<a title="Add to My Google Calendar" class="addtogooglecalendar" target="'.$params['target'].'" href="'.$params['url'].'action=TEMPLATE&text='.$this->eventTitle.'&dates='.$this->eventStartTime.'/'.$this->eventEndTime.'&location='.$this->eventLocation.'&details='.$params['description'].'&trp=true&sprop=website:http://www.gothamvolleyball.org&sprop=name:Gotham Volleyball"><img src="//www.google.com/calendar/images/ext/gc_button2.gif"></a>';
+    $eventStartTime = $gCal->formatTime($params['datetime']['start']);
+    $eventEndTime = $gCal->formatTime($params['datetime']['end']);
+    $eventLocation = $params['location'];
+    return '<a title="Add to My Google Calendar" class="addtogooglecalendar" target="'.$params['target'].'" href="'.$params['url'].'action=TEMPLATE&text='.$eventTitle.'&dates='.$eventStartTime.'/'.$eventEndTime.'&location='.$eventLocation.'&details='.$params['description'].'&trp=true&sprop=website:http://www.gothamvolleyball.org&sprop=name:Gotham Volleyball"><img src="//www.google.com/calendar/images/ext/gc_button2.gif"></a>';
   }
 
   public function setTimeZone($timeZone = "America/New_York") {
