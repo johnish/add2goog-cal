@@ -19,6 +19,13 @@ class GoogleCalendar {
   // &trp=true&sprop=www.gothamvolleyball.org&sprop=name:Gotham%20Volleyball" target="_blank">
   // <img src="//www.google.com/calendar/images/ext/gc_button1.gif" alt="0" border="0"></a>
 
+  
+  /**
+   * example URL from Facebook calendar export
+   * http://www.google.com/calendar/event?action=TEMPLATE&pprop=eidmsgid%3A_ckoj8dpp6sq3ad9j6kr34e9g68sk0pj1cdim4rrfdcn66rrd_148b3960b4474479&dates=20141024T190000%2F20141024T220000&text=Bradley%27s%20Birthday%20Ballyhoo!&location=Therapy&details=Bradley%20begins%20being%20barely%2030!%20Bring%20blondes%2C%20brunettes%20and%20banditos%2C%20but%20bimbos%20are%20banned.%0A%0Ahttps%3A%2F%2Fwww.facebook.com%2Fevents%2F1479745535629029%2F&add=johnish%40gmail.com&ctok=am9obmlzaEBnbWFpbC5jb20
+   * 
+   */
+  
   /**
    * Constructor
    * @param array $config 
@@ -26,6 +33,7 @@ class GoogleCalendar {
   public function __construct() {
     //set local timezone
     date_default_timezone_set("America/New_York");
+    $this->timeZone = "America/New_York";
 
     $this->_config = array('url' => 'http://www.google.com/calendar/event?',
         'title' => '',
@@ -53,6 +61,15 @@ class GoogleCalendar {
   private function formatTime($time) {
     date_default_timezone_set($this->timeZone);
     $tempStart = strtotime($time . " ".$this->timeZone);
+    $inDSTNow = date('I'); // this will be 1 in DST or else 0
+    $eventInDST = date('I', $tempStart);
+    //if we aren't in DST right now but this date is in DST we need to compensate for a google glitch and subtract an hour
+    if (!$inDSTNow && $eventInDST) {
+      $date = new DateTime();
+      $date->setTimestamp($tempStart);
+      $date->modify('-1 hour');
+      $tempStart = $date->getTimestamp();
+    }
     echo "\n<!-- formatTime ".$time." and strtotime says ".$tempStart." -->\n";
     $tempStart = Dates::convert_to_timezone($tempStart, 'Universal');
     return date('Ymd\THis\Z', $tempStart);

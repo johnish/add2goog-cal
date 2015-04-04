@@ -3,7 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 if (!isset($_SERVER['DOCUMENT_ROOT'])) {
     $_SERVER['DOCUMENT_ROOT'] = substr($_SERVER['SCRIPT_FILENAME'], 0, -strlen($_SERVER['SCRIPT_NAME']));
 }
-define("APP_PATH",$_SERVER['DOCUMENT_ROOT'].'/add2gcal/');
+define("APP_PATH",$_SERVER['DOCUMENT_ROOT'].'/');
 require(APP_PATH . '_classes/Autoloader.class.php');
 Autoloader::setCacheFilePath(APP_PATH . 'tmp/class_path_cache.txt');
 Autoloader::excludeFolderNamesMatchingRegex('/^CVS|\..*$/');
